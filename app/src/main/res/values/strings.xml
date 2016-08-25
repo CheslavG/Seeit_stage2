@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Seeit</string>
+    <string name="setAim">Set your aim</string>
+    <string name="setMax">Set your max</string>
+    <string name="setStep">Set your step</string>
+    <string name="setresult">SetResult</string>
+
+</resources>

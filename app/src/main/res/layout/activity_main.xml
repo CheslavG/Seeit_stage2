@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0">
+
+            <ImageView
+                android:id="@+id/imageViewGrayScale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/cosmos"
+                android:layout_gravity="left|center_vertical" />
+
+            <ImageView
+                android:id="@+id/imageViewClip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/clipping"
+                android:layout_gravity="left|center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvMax"
+                android:layout_gravity="center"
+                android:maxLength="10"
+                android:contextClickable="false" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/etSetAim"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:inputType="text"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
+                android:layout_gravity="right|top"
+                android:hint="@string/setAim" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/etSetMax"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:inputType="number"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
+                android:layout_gravity="right|center_vertical"
+                android:maxLength="10"
+                android:hint="@string/setMax" />
+
+            <EditText
+                android:layout_width="119dp"
+                android:layout_height="122dp"
+                android:id="@+id/etSetStep"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:inputType="number"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
+                android:layout_gravity="right|bottom"
+                android:maxLength="10"
+                android:hint="@string/setStep" />
+
+            <Button
+                android:layout_width="131dp"
+                android:layout_height="wrap_content"
+                android:text="@string/setresult"
+                android:id="@+id/SetBtn"
+                android:layout_below="@+id/etNum1"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="left|center_vertical" />
+
+            <TextView
+                android:layout_width="159dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvAim"
+                android:layout_gravity="center_horizontal|top"
+                android:layout_marginTop="100dp" />
+
+            <Button
+                android:id="@+id/buttonLoadPicture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|bottom"
+                android:layout_weight="0"
+                android:onClick="loadImagefromGallery"
+                android:text="Load Picture" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
