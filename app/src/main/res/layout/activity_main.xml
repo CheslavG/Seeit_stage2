@@ -23,14 +23,13 @@
                 android:id="@+id/imageViewGrayScale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/cosmos"
+
                 android:layout_gravity="left|center_vertical" />
 
             <ImageView
                 android:id="@+id/imageViewClip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/clipping"
                 android:layout_gravity="left|center_vertical" />
 
             <TextView

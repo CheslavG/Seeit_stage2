@@ -1,17 +1,24 @@
 package cheslavg.seeit;
 
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.ClipDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 //, TextView.OnEditorActionListener
@@ -25,13 +32,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ClipDrawable clipDrawable = null;
     ImageView imageViewGrayScale;
     ColorMatrix matrix = new ColorMatrix();
-    ImageView imageViewClip;
+    ImageView imageViewClip = null;
     int level_delta = 10000;
-    private static final String TAG = AppCompatActivity.class.getSimpleName();
+    private static final String TAG = "Seeit";
+    private static int RESULT_LOAD_IMG = 1;
+    String imgDecodableString = null;
 
 
-
-        @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         //OnCreate and other standart stuff
@@ -72,17 +80,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Log.d(TAG,"-"+"create grayscale filter");
         matrix.setSaturation(0);
-        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+        final ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+
         Log.d(TAG,"-"+"set grayscale filter to ImageViewGrayScale");
-        imageViewGrayScale.setColorFilter(filter);
+
 
         //And than -- our Clipped Drawable
-        Log.d(TAG,"-"+"create clipDrawable from the ImageViewClip");
-        clipDrawable = (ClipDrawable) imageViewClip.getDrawable();
-
-
-
+        //Log.d(TAG,"-"+"create clipDrawable from the ImageViewClip");
+        //clipDrawable = (ClipDrawable) imageViewClip.getDrawable();
     }
+
+        public void loadImagefromGallery(View view){
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(galleryIntent,RESULT_LOAD_IMG);
+        }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+            super.onActivityResult(requestCode,resultCode,data);
+            try {
+                if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK && null != data){
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                    Cursor cursor = getContentResolver().query(selectedImage,filePathColumn,null,null,null);
+                    cursor.moveToFirst();
+
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    imgDecodableString = cursor.getString(columnIndex);
+                    cursor.close();
+                    imageViewClip.setImageBitmap(BitmapFactory.decodeFile(imgDecodableString));
+                    imageViewGrayScale.setImageBitmap(BitmapFactory.decodeFile(imgDecodableString));
+                    matrix.setSaturation(0);
+                    final ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+                    imageViewGrayScale.setColorFilter(filter);
+                }
+                else{
+                    Toast.makeText(this,"You haven't picked Image", Toast.LENGTH_LONG).show();
+
+                }
+            } catch (Exception e){
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+                Log.d(TAG,"-"+"Got picture from gallery");
+        }
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -96,9 +136,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 else {
                 Log.d(TAG,"-"+"Get the percentage of coloring throw clipDrawable.setLevel(level)");
-                int level = level_delta*Integer.parseInt(etSetStep.getText().toString())/Integer.parseInt(etSetMax.getText().toString());
-
-                    clipDrawable.setLevel(level);
+                    ClipDrawable drawable = new ClipDrawable (imageViewClip.getDrawable(), Gravity.NO_GRAVITY,ClipDrawable.HORIZONTAL);
+                    int level = level_delta*Integer.parseInt(etSetStep.getText().toString())/Integer.parseInt(etSetMax.getText().toString());
+                    drawable.setLevel(level);
+                    Log.d(TAG,"-"+"Level is..." + level);
                     tvAim.setText(etSetAim.getText().toString());
                     tvMax.setText(etSetMax.getText().toString());
                     break;
